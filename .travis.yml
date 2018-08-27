@@ -29,9 +29,9 @@ env:
     # TB_LEVEL >= 2: gcc-4.4, gcc-4.8, gcc-6, clang-3.4
     # TB_LEVEL >= 3: gcc-4.6, gcc-5, clang-3.9, xcode9
     # TB_LEVEL >= 4: include sanitize/scan-build/valgrind builds
-    # TB_LEVEL >= 5: most other compilers
-    # TB_LEVEL >= 6: cross-compilers running testsuite under qemu/wine
-    - TB_LEVEL=4
+    # TB_LEVEL >= 5: cross-compilers running testsuite under qemu/wine
+    # TB_LEVEL >= 6: all other compilers & builds
+    - TB_LEVEL=5
     - TB_OS_linux=1 TB_OS_osx=1
     - CROSS= C= B= T= X=
     - secure: "YXHLXK+CM5d8yELIUSSs+P0/CoefClO7/AUX1oBj5W75g+YzR5uS2doVsB8UH8S8/GdNxk4P9Jgn4EiEVnjfGgn2eAD9MVpDPIxyJs5vI+5G77asq3QNdSl6QFv3O9I/6yBoVCewgPFPqsMd7Yvs/Ea3LcQkqalVhrC8ybYtmfs6VL2w33gn2J3b3TCn/s21L0ijklM0xvP1GNMDtuUpTSish5wvGOHE/91rwtdUDbJR8u31QY7fTASDiNnL/7ihgEIZ5XxpDYXviX1GC+nemhX1fWpmVmuT8m30Ruodi0yJVGASw9i2SaKv/VX/fJ/w2vlCfspL5LMZKkVLlfpIo3mQGqmMHFxv7mNy+hRu50ptoWNSkWArcqifwveh2liHUpl4jTvWaVll5Tw5VUGJhAUdzCTnqLIbWFnKIgCedL3iRFi4+EbyWNxel8lFESMOTDZFfJG5yEiDJbgbLsUaT2GmrsOphwAG7zDcZzvYTdjg/lF4Wh0MUnQJ+0MhDpii8Ahjp49lAPdw8uRQyyY7d7ksYKXVIkbgl6dRCC5vZSPucJiFjq2BClqIoEmzZPvHveDbovzFkNhJX9tFLrHLcXbPPcegww1FGoQ3wBM6JwJ+TvSD6N4OdCmou05aDuuQeznHi3GxOScjGwxdMIU28fdJDCTDg2rOihm22kHVajo="
@@ -56,12 +56,12 @@ matrix:
       compiler: gcc
       env: C=gcc-4.4-m64
       addons: { apt: { sources: *PS, packages: [ "g++-4.4" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: gcc
       env: C=gcc-4.5-m32
       addons: { apt: { sources: *PS, packages: [ "g++-4.5-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: gcc
       env: C=gcc-4.5-m64
@@ -75,12 +75,12 @@ matrix:
       os: linux
       compiler: gcc
       env: C=gcc-4.6-m64
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: gcc
       env: C=gcc-4.7-m32
       addons: { apt: { sources: *PS, packages: [ "g++-4.7-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: gcc
       env: C=gcc-4.7-m64
@@ -101,12 +101,12 @@ matrix:
       compiler: gcc
       env: C=gcc-4.8-mx32
       addons: { apt: { packages: [ "g++-multilib", "libx32stdc++-4.8-dev" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: gcc
       env: C=gcc-4.9-m32
       addons: { apt: { sources: *PS, packages: [ "g++-4.9-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: gcc
       env: C=gcc-4.9-m64
@@ -131,31 +131,6 @@ matrix:
       compiler: gcc
       env: C=gcc-6-m64
       addons: { apt: { sources: *PS, packages: [ "g++-6" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
-      os: linux
-      compiler: gcc
-      env: C=gcc-6-m32 B=debug
-      addons: { apt: { sources: *PS, packages: [ "g++-6-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
-      os: linux
-      compiler: gcc
-      env: C=gcc-6-m64 B=debug
-      addons: { apt: { sources: *PS, packages: [ "g++-6" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[4-9]$/
-      os: linux
-      compiler: gcc
-      env: C=gcc-6-m64 B=debug+sanitize
-      addons: { apt: { sources: *PS, packages: [ "g++-6" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[4-9]$/
-      os: linux
-      compiler: gcc
-      env: C=gcc-6-m64 B=sanitize
-      addons: { apt: { sources: *PS, packages: [ "g++-6" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[4-9]$/
-      os: linux
-      compiler: gcc
-      env: C=gcc-6-m64 B=valgrind T=valgrind
-      addons: { apt: { sources: *PS, packages: [ "g++-6", valgrind ] } }
     - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[1-9]$/
       os: linux
       dist: trusty
@@ -180,6 +155,36 @@ matrix:
       compiler: gcc
       env: C=gcc-8-m64
       addons: { apt: { sources: *TS, packages: [ "g++-8" ] } }
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
+      os: linux
+      dist: trusty
+      compiler: gcc
+      env: C=gcc-8-m32 B=debug
+      addons: { apt: { sources: *PS, packages: [ "g++-8-multilib", "zlib1g-dev:i386" ] } }
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
+      os: linux
+      dist: trusty
+      compiler: gcc
+      env: C=gcc-8-m64 B=debug
+      addons: { apt: { sources: *PS, packages: [ "g++-8" ] } }
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[4-9]$/
+      os: linux
+      dist: trusty
+      compiler: gcc
+      env: C=gcc-8-m64 B=debug+sanitize
+      addons: { apt: { sources: *PS, packages: [ "g++-8" ] } }
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[4-9]$/
+      os: linux
+      dist: trusty
+      compiler: gcc
+      env: C=gcc-8-m64 B=sanitize
+      addons: { apt: { sources: *PS, packages: [ "g++-8" ] } }
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[4-9]$/
+      os: linux
+      dist: trusty
+      compiler: gcc
+      env: C=gcc-8-m64 B=valgrind T=valgrind
+      addons: { apt: { sources: *PS, packages: [ "g++-8", valgrind ] } }
     - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[2-9]$/
       os: linux
       compiler: clang
@@ -189,42 +194,42 @@ matrix:
       os: linux
       compiler: clang
       env: C=clang-3.4-m64
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.5-m32
       addons: { apt: { sources: *PS, packages: [ "clang-3.5", "g++-6-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.5-m64
       addons: { apt: { sources: *PS, packages: [ "clang-3.5" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.6-m32
       addons: { apt: { sources: *PS, packages: [ "clang-3.6", "g++-6-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.6-m64
       addons: { apt: { sources: *PS, packages: [ "clang-3.6" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.7-m32
       addons: { apt: { sources: *PS, packages: [ "clang-3.7", "g++-6-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.7-m64
       addons: { apt: { sources: *PS, packages: [ "clang-3.7" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.8-m32
       addons: { apt: { sources: *PS, packages: [ "clang-3.8", "g++-6-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       compiler: clang
       env: C=clang-3.8-m64
@@ -259,25 +264,25 @@ matrix:
       compiler: clang
       env: C=clang-3.9-m64 B=scan-build
       addons: { apt: { sources: *PS, packages: [ "clang-3.9" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       dist: trusty
       compiler: clang
       env: C=clang-4.0-m32
       addons: { apt: { sources: *TS, packages: [ "clang-4.0", "g++-7-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       dist: trusty
       compiler: clang
       env: C=clang-4.0-m64
       addons: { apt: { sources: *TS, packages: [ "clang-4.0" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       dist: trusty
       compiler: clang
       env: C=clang-5.0-m32
       addons: { apt: { sources: *TS, packages: [ "clang-5.0", "g++-7-multilib", "zlib1g-dev:i386" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: linux
       dist: trusty
       compiler: clang
@@ -295,54 +300,54 @@ matrix:
       compiler: clang
       env: C=clang-6.0-m64
       addons: { apt: { sources: *TS, packages: [ "clang-6.0" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
       os: linux
       compiler: gcc
       env: CROSS=arm-linux-gnueabi C=gcc-4.6 T=qemu
       addons: { apt: { packages: [ "g++-arm-linux-gnueabi", "qemu-user" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
       os: linux
       compiler: gcc
       env: CROSS=arm-linux-gnueabihf C=gcc-4.6 T=qemu
       addons: { apt: { packages: [ "g++-arm-linux-gnueabihf", "qemu-user" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
       os: linux
       compiler: gcc
       env: CROSS=i386-w64-mingw32 C=gcc-4.6 T=wine
       addons: { apt: { packages: [ "binutils-mingw-w64-i686", "g++-mingw-w64-i686", "wine" ] } }
-    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
+    - if: env(TB_OS_linux) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
       os: linux
       compiler: gcc
       env: CROSS=x86_64-w64-mingw32 C=gcc-4.6 T=wine
       addons: { apt: { packages: [ "binutils-mingw-w64-x86-64", "g++-mingw-w64-x86-64", "wine" ] } }
-    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: osx
       osx_image: xcode6.4
       compiler: clang
       # must use debug build or else we get "ld: internal error: atom not found" when linking
       env: C=clang-602-m32 B=debug
-    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: osx
       osx_image: xcode6.4
       compiler: clang
       # must use debug build or else we get "ld: internal error: atom not found" when linking
       env: C=clang-602-m64 B=debug
-    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: osx
       osx_image: xcode7.3
       compiler: clang
       env: C=clang-703-m32
-    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: osx
       osx_image: xcode7.3
       compiler: clang
       env: C=clang-703-m64
-    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: osx
       osx_image: xcode8.3
       compiler: clang
       env: C=clang-802-m32
-    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[5-9]$/
+    - if: env(TB_OS_osx) = 1 AND env(TB_LEVEL) =~ /^[6-9]$/
       os: osx
       osx_image: xcode8.3
       compiler: clang
